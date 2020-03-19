@@ -36,7 +36,7 @@ paths:
         - application/json
         - application/xml
       parameters:
-        - name: lineNumberItai
+        - name: lineNumber Great!
           in: query
           description: The official line number
           required: true
