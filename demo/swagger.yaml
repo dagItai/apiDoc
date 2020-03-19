@@ -1,0 +1,156 @@
+swagger: '2.0'
+info:
+  description: |
+    This is a sample Petstore server.  You can find
+    out more about Swagger at
+    [http://swagger.io](http://swagger.io) or on
+    [irc.freenode.net, #swagger](http://swagger.io/irc/).
+  version: "5.1"
+  title: Moovit Public Transit APIs
+  termsOfService: http://moovit.com
+  contact:
+    email: itai.dagan@moovit.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+# host: petstore.swagger.io
+# basePath: /v2
+tags:
+  - name: Line
+    description: This set of APIs return line-based data.
+  - name: Trip Plan
+    description: The Trip Plan APIs offer a chatty manner in which to perform trip plan requests.
+    externalDocs:
+      description: We can add something here
+      url: http://swagger.io
+# schemes:
+# - https
+paths:
+  /GetLineBasicInfo:
+    get:
+      tags:
+        - Line
+      summary: Returns basic information as to the specified line, such as line number, long name, headsign, color, icon, etc.
+      operationId: lineBasicInfo
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: lineNumber
+          in: query
+          description: The official line number
+          required: true
+          type: string
+        - name: agencyName
+          in: query
+          description: The agency operating the line
+          required: true
+          type: string
+        - name: lineGroupId
+          in: query
+          description: Moovit line group ID
+          required: true
+          type: integer
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: string
+          headers:
+            X-Rate-Limit:
+              type: integer
+              format: int32
+              description: calls per hour allowed by the user
+            X-Expires-After:
+              type: string
+              format: date-time
+              description: date in UTC when token expires
+        400:
+          description: Invalid username/password supplied
+  /GetSuggestedRoutes:
+    get:
+      tags:
+        - Trip Plan
+      summary: This is Moovit’s primary trip plan API. It performs a multi-modal search in order to return the best possible options for a user to get from point A to point B, according to actual availability and the specified constraints.
+      description: "In addition to the basic search query, containing location and times, this service also allows more advanced tuning, including:
+        Search Type - Fastest, least walking, least transfers
+        Agency filter - allow only a specific set of agencies to be returned
+        Transit type filter - allow only a specific set of public transit types to be returned
+        Transit mode filters - allow only a specific set of modes (PT, bikes, walk, etc.) to be used
+        Bike filter - allow private bikes, docked bikes, dockless bikes, docked scooters, dockless scooters
+
+        In case more advanced settings are required (such as preferred agencies or transit types, customized max walk distances, etc.), this should be defined via the Moovit account manager, and a configuration ID will be provided for each such custom configuration. This ID should be passed in the relevant field to the API call."
+      operationId: getSuggestedRoutes
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: from
+          in: query
+          description: The search’s origin location
+          required: true
+          type: string
+        - name: to
+          in: query
+          description: The search’s target location
+          required: true
+          type: string
+        - name: transitTypes
+          in: query
+          description: "Focus on a certain set of transit types. If not specified, all will be allowed. One of: Tram, Subway, Rail, Bus, Ferry, CableCar, Gondola, Funicular"
+          required: false
+          type: array
+          items:
+            type: string
+        - name: time
+          in: query
+          description: Moovit line group ID
+          required: false
+          type: integer
+        - name: timeType
+          in: query
+          description: Moovit line group ID
+          required: true
+          type: integer
+        - name: searchType
+          in: query
+          description: Moovit line group ID
+          required: false
+          type: integer
+        - name: modeTypes
+          in: query
+          description: Moovit line group ID
+          required: false
+          type: integer
+        - name: bikeTypes
+          in: query
+          description: Moovit line group ID
+          required: false
+          type: integer
+        - name: customConfigId
+          in: query
+          description: Moovit line group ID
+          required: false
+          type: integer
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: string
+          headers:
+            X-Rate-Limit:
+              type: integer
+              format: int32
+              description: calls per hour allowed by the user
+            X-Expires-After:
+              type: string
+              format: date-time
+              description: date in UTC when token expires
+        400:
+          description: Invalid username/password supplied
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /api.moovitapp.com/services-app/services/EX/API
+schemes:
+  - https
+  - http
